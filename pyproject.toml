@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rheopy-microrheology"
+version = "0.1.0"
+description = "Microrheology: particle-tracking and differential dynamic microscopy (DDM) — video in, moduli and viscosity out"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Marco Caggioni", email = "marco.caggioni@gmail.com" }]
+keywords = ["rheology", "microrheology", "DDM", "particle tracking", "MSD"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+tracking = ["trackpy", "pims"]
+ddm = ["lmfit"]
+widgets = ["ipywidgets"]
+all = ["trackpy", "pims", "lmfit", "ipywidgets", "opencv-python"]
+
+[project.urls]
+Homepage = "https://github.com/rheopy/microrheology"
+Documentation = "https://rheopy.github.io/microrheology/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["microrheology"]
+# videos stay out of the wheel; microrheology.data fetches them on demand
+exclude = ["data"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
