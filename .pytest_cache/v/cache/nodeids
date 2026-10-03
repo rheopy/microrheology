@@ -1,0 +1,7 @@
+[
+  "tests/test_microrheology.py::test_azimuthal_average",
+  "tests/test_microrheology.py::test_ddm_viscosity_synthetic",
+  "tests/test_microrheology.py::test_gser_newtonian",
+  "tests/test_microrheology.py::test_imports",
+  "tests/test_microrheology.py::test_video_container"
+]
