@@ -57,7 +57,15 @@ D.shape   # (n_deltas, n_q)
 
 `n_average` frame pairs are averaged per lag; `n_deltas` lag times
 are log-spaced. This is the expensive step — a few minutes on a
-laptop for the full video.
+laptop for the full video. What it produces, for the bundled water
+video, is a relaxation that grows with lag time and dies off with
+q:
+
+```{image} _static/walkthrough/ddm_matrix.png
+:alt: DDM matrix D(q, Δt) for the high-concentration water video
+:width: 640px
+:align: center
+```
 
 Inspect a slice interactively, with per-q fits:
 
@@ -79,6 +87,17 @@ print(f"η = {eta:.3e} Pa·s")   # water ≈ 0.89e-3
 (`qmin`/`qmax` select the clean mid-q range, away from the
 low-q drift and high-q noise.)
 
+On the bundled water video this gives **η ≈ 0.63 mPa·s** — the right
+order of magnitude for water at 25 °C (0.89 mPa·s), from a
+heavily compressed mp4 and no particle tracking at all. The
+per-q relaxation times follow τ ∝ 1/q² cleanly:
+
+```{image} _static/walkthrough/ddm_tau_q.png
+:alt: Relaxation time vs wavevector with power-law fit
+:width: 560px
+:align: center
+```
+
 ## 6. Or the radius
 
 If the viscosity is known instead, the same pipeline returns the
@@ -89,3 +108,7 @@ a = mr.ddm.radius_from_ddm(video, viscosity=0.89e-3,
                            qmin=10, qmax=50)
 print(f"a = {a:.3f} µm")   # nominal 0.2 µm radius
 ```
+
+On the bundled video this returns **a ≈ 0.142 µm**, vs the nominal
+0.2 µm tracer radius — again in the right ballpark for a compressed
+demo clip.

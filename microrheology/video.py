@@ -64,12 +64,17 @@ class Video:
                 f"fps={self.fps:g}, muperpix={self.info['muperpix']:g})")
 
 
-def read_video(path, fps=100.0, muperpix=0.1, max_frames=None, to_gray=True):
+def read_video(path, fps=None, muperpix=0.1, max_frames=None, to_gray=True):
     """Read a video file into a :class:`Video` (OpenCV backend).
 
     Works with mp4/avi/mov — and inside JupyterLite/Pyodide, where the
     ``opencv-python`` build is available. For ``.cin`` Phantom files use
     ``pims.Cine`` instead (desktop only).
+
+    ``fps``: explicit frames-per-second. When omitted, the container's
+    metadata is used (falling back to 100). Pass it explicitly when the
+    container metadata is wrong — e.g. the water test videos are 100 fps
+    despite their mp4 headers.
     """
     try:
         import cv2
@@ -82,6 +87,8 @@ def read_video(path, fps=100.0, muperpix=0.1, max_frames=None, to_gray=True):
     if not cap.isOpened():
         raise OSError(f"cannot open video: {path}")
     file_fps = cap.get(cv2.CAP_PROP_FPS)
+    if fps is None:
+        fps = file_fps if file_fps else 100.0
     frames = []
     while True:
         ok, frame = cap.read()
